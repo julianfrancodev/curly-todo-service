@@ -137,7 +137,7 @@ exports.deleteProject = async (req, res) => {
 
         await Project.findOneAndRemove({_id: req.params.id});
 
-        res.json({msg: "Proyecto Eliminado"})
+        res.json({msg: "Proyecto Eliminado"});
     } catch (e) {
         console.log(e);
         res.status(500).json({ msg: "Unexpected Error" });
