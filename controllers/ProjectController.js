@@ -87,7 +87,7 @@ exports.updateProject = async (req, res) => {
         }
 
 
-        // Verificar el credor del proyecto 
+        // Verificar el creador del proyecto 
 
         if (project.creator.toString() !== req.user.id) {
             return res.status(401).json({ msg: "No autorizado" });

@@ -17,11 +17,12 @@ app.use(express.json({extended: true}));
 // Puerto de la app
 const PORT = process.env.PORT || 5000;
 
-// Importar rUTAS
+// Importar Rutas
 
 app.use('/api/users',require('./routes/Users'));
 app.use('/api/auth', require('./routes/Auth'));
 app.use('/api/projects', require('./routes/Projects'));
+app.use('/api/todos', require('./routes/Todos'));
 
 
 // Arrancamos el servidor
