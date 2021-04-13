@@ -12,14 +12,14 @@ exports.createTodo = async (req, res) => {
 
     // Extraer el pryecto y comprobar si existte
 
-    const { project } = req.body;
 
     try {
+        const { project } = req.body;
 
         const projectD = await Project.findById(project);
 
-        if(!projectD){
-            return res.json({msg: "Proyecto no encontrado"});
+        if (!projectD) {
+            return res.json({ msg: "Proyecto no encontrado" });
         }
 
         // Revisar si el proyecto pertenece al usuario autenticado
@@ -36,7 +36,7 @@ exports.createTodo = async (req, res) => {
         await todo.save();
 
 
-        res.json({todo});
+        res.json({ todo });
 
 
 
@@ -44,6 +44,44 @@ exports.createTodo = async (req, res) => {
         console.log(e);
 
         res.status(500).json({ msg: "Unexpected Error" });
+    }
+
+}
+
+
+// Obtiene las tareas por proyecto
+
+exports.getTodos = async (req, res) => {
+
+    try {
+
+        const { project } = req.body;
+
+
+        const projectD = await Project.findById(project);
+
+        if (!projectD) {
+            return res.json({ msg: "Proyecto no encontrado" });
+        }
+
+        // Revisar si el proyecto pertenece al usuario autenticado
+
+        if (projectD.creator.toString() !== req.user.id) {
+            return res.status(401).json({ msg: "No autorizado" });
+
+        }
+
+        //Obtener las tareas por poryecto
+
+
+        const todos = await Todo.find({project: project});
+
+        res.json({todos});
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ msg: "Unexpected Error" });
+
     }
 
 }

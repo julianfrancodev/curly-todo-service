@@ -19,4 +19,9 @@ router.post('/',
     TodoController.createTodo
 );
 
+
+router.get('/',
+    Auth,
+    TodoController.getTodos
+);
 module.exports = router;
