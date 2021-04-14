@@ -24,4 +24,13 @@ router.get('/',
     Auth,
     TodoController.getTodos
 );
+
+router.put('/:id',
+    Auth,
+    TodoController.updateTodo
+)
+router.delete('/:id',
+    Auth,
+    TodoController.deleteTodo
+)
 module.exports = router;

@@ -71,12 +71,11 @@ exports.getTodos = async (req, res) => {
 
         }
 
-        //Obtener las tareas por poryecto
+        //Obtener las tareas por proyecto
 
+        const todos = await Todo.find({ project: project });
 
-        const todos = await Todo.find({project: project});
-
-        res.json({todos});
+        res.json({ todos });
 
     } catch (e) {
         console.log(e);
@@ -84,4 +83,96 @@ exports.getTodos = async (req, res) => {
 
     }
 
+}
+
+
+exports.updateTodo = async (req, res) => {
+    try {
+
+        const { project, name, state } = req.body;
+
+
+
+        // Revisar si la tarea existe
+        let todoD = await Todo.findById(req.params.id);
+
+        if (!todoD) {
+            return res.status(404).json({ msg: "No existe la tarea" });
+        }
+
+        // Extraer el proyecto 
+        const projectD = await Project.findById(project);
+
+        // Revisar si el proyecto pertenece al usuario autenticado
+
+        if (projectD.creator.toString() !== req.user.id) {
+            return res.status(401).json({ msg: "No autorizado" });
+
+        }
+
+        // Crear un nuevo proyecto con nueva informacion
+
+        const newTodo = {};
+
+        if (name) {
+            newTodo.name = name;
+        }
+
+        if (state) {
+            newTodo.state = state;
+        }
+
+        // Guardar la tarea 
+
+        todoD = await Todo.findOneAndUpdate({ _id: req.params.id }, newTodo, { new: true });
+
+        res.json({ todoD });
+
+
+
+
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ msg: "Unexpected Error" });
+    }
+}
+
+
+exports.deleteTodo = async (req, res)=>{
+    try {
+
+        const { project } = req.body;
+
+
+
+        // Revisar si la tarea existe
+        let todoD = await Todo.findById(req.params.id);
+
+        if (!todoD) {
+            return res.status(404).json({ msg: "No existe la tarea" });
+        }
+
+        // Extraer el proyecto 
+        const projectD = await Project.findById(project);
+
+        // Revisar si el proyecto pertenece al usuario autenticado
+
+        if (projectD.creator.toString() !== req.user.id) {
+            return res.status(401).json({ msg: "No autorizado" });
+
+        }
+
+        //Eliminar
+
+
+        await Todo.findOneAndRemove({_id: req.params.id});
+
+        res.json({msg: "Tarea eliminada"});
+
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ msg: "Unexpected Error" });
+    }
 }
