@@ -17,6 +17,7 @@ exports.createUser = async (req, res) => {
   // Extraer email y password 
 
   const { email, password } = req.body;
+  
   try {
 
     // Revisar que el usuario registrado sea unico 
@@ -43,7 +44,7 @@ exports.createUser = async (req, res) => {
     // Crear y firmar el jwt 
 
     const payload = {
-      user:{
+      user: {
         id: user.id
       }
     };
