@@ -39,6 +39,7 @@ exports.createProject = async (req, res) => {
 exports.getProjects = async (req, res) => {
     try {
 
+        console.log("get projects");
         console.log(req.user);
 
         const projects = await Project.find({ creator: req.user.id })

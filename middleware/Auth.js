@@ -7,9 +7,11 @@ module.exports = function (req, res, next) {
     const token = req.header("x-auth-token");
 
     // Revisar si no hay token
+
+    console.log(token);
     
     if (!token) {
-        return res.status(401).json({ msg: "Unauthorized" });
+        return res.status(401).json({ msg: "No token in x-auth-token" });
     }
 
     try {
