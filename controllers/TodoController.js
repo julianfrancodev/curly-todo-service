@@ -55,7 +55,7 @@ exports.getTodos = async (req, res) => {
 
     try {
 
-        const { project } = req.body;
+        const { project } = req.query;
 
 
         const projectD = await Project.findById(project);
@@ -73,7 +73,7 @@ exports.getTodos = async (req, res) => {
 
         //Obtener las tareas por proyecto
 
-        const todos = await Todo.find({ project: project });
+        const todos = await Todo.find({ project: project }).sort({createdAt: -1});
 
         res.json({ todos });
 
@@ -142,7 +142,7 @@ exports.updateTodo = async (req, res) => {
 exports.deleteTodo = async (req, res)=>{
     try {
 
-        const { project } = req.body;
+        const { project } = req.query;
 
 
 
