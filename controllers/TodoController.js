@@ -73,7 +73,7 @@ exports.getTodos = async (req, res) => {
 
         //Obtener las tareas por proyecto
 
-        const todos = await Todo.find({ project: project }).sort({createdAt: -1});
+        const todos = await Todo.find({ project: project }).sort({ createdAt: -1 });
 
         res.json({ todos });
 
@@ -114,22 +114,14 @@ exports.updateTodo = async (req, res) => {
 
         const newTodo = {};
 
-        if (name) {
-            newTodo.name = name;
-        }
-
-        if (state) {
-            newTodo.state = state;
-        }
+        newTodo.name = name;
+        newTodo.state = state;
 
         // Guardar la tarea 
 
         todoD = await Todo.findOneAndUpdate({ _id: req.params.id }, newTodo, { new: true });
 
-        res.json({ todoD });
-
-
-
+        res.json({ todo: todoD });
 
 
     } catch (e) {
@@ -139,7 +131,7 @@ exports.updateTodo = async (req, res) => {
 }
 
 
-exports.deleteTodo = async (req, res)=>{
+exports.deleteTodo = async (req, res) => {
     try {
 
         const { project } = req.query;
@@ -166,9 +158,9 @@ exports.deleteTodo = async (req, res)=>{
         //Eliminar
 
 
-        await Todo.findOneAndRemove({_id: req.params.id});
+        await Todo.findOneAndRemove({ _id: req.params.id });
 
-        res.json({msg: "Tarea eliminada"});
+        res.json({ msg: "Tarea eliminada" });
 
 
     } catch (e) {
